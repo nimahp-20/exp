@@ -9,10 +9,14 @@ const userModel = mongoose.model('books', {
     },
     author: {
         type: String
-    }, 
+    },
     price: {
         type: Number,
         required: true,
+    },
+    free: {
+        type: Number,
+        default: 1,
     }
 })
 

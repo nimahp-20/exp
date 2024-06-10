@@ -1,12 +1,14 @@
 const express = require('express')
 require('./configs/db')
 const app = express()
-const bookModel = require('./models/books')
-const { isValidObjectId } = require('mongoose')
+const usersRouter = require('./routes/users')
+const booksRouter = require('./routes/books')
+
 app.use(express.json())
 app.use(express.urlencoded())
-const usersRouter = require('./routes/users')
+
 app.use('/api/user/', usersRouter)
+app.use('/api/book/', booksRouter)
 
 const courses = [
     {
@@ -29,7 +31,7 @@ app.get('/courses', (req, res) => {
     if (courses) {
         res.status(200).send({
             success: true,
-            data: { courses },
+            data: {courses},
             message: 'datas'
         })
     } else {
@@ -50,7 +52,7 @@ app.get('/courses/:id', (req, res) => {
     if (course) {
         res.status(200).send({
             success: true,
-            data: { course },
+            data: {course},
             message: 'datas'
         })
     } else {
@@ -62,27 +64,6 @@ app.get('/courses/:id', (req, res) => {
     }
 })
 
-app.post('/api/book', (req, res) => {
-    let { bookName, author, price } = req.body
-
-    if (bookName === "" || author === "" || price === null) {
-        res.status(422).json({
-            message: "data is not Valid"
-        })
-    } else {
-        bookModel.create({
-            price, bookName, author
-        })
-
-        res.status(201).json({
-            message: "book Created SuccessFully",
-        })
-    }
-})
-app.get('/test/:objId', (req, res) => {
-    const { objId } = req.params
-    res.send(isValidObjectId(objId))
-})
-app.listen(3050, () => {
-    console.log('serverRunning on 3050');
+app.listen(3070, () => {
+    console.log('serverRunning on 3070');
 }) 

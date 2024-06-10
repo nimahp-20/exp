@@ -1,5 +1,4 @@
-
-const { isValidObjectId } = require('mongoose')
+const {isValidObjectId} = require('mongoose')
 const registerValidator = require('../validators/register')
 const userModel = require('../models/users')
 
@@ -10,7 +9,7 @@ exports.register = async (req, res) => {
         return res.status(422).json(validationResult)
     }
 
-    let { name, userName, password, email } = req.body
+    let {name, userName, password, email} = req.body
 
     const data = await userModel.create({
         name,
@@ -32,9 +31,9 @@ exports.getAll = async (req, res) => {
 }
 
 exports.removeUser = async (req, res) => {
-    const { userId } = req.params
+    const {userId} = req.params
     if (isValidObjectId(userId)) {
-        const deleteUser = await userModel.findByIdAndDelete({ _id: userId })
+        const deleteUser = await userModel.findByIdAndDelete({_id: userId})
         if (!deleteUser) {
             return res.status(404).json({
                 message: 'User not found'
@@ -52,9 +51,9 @@ exports.removeUser = async (req, res) => {
 }
 
 exports.getOne = async (req, res) => {
-    const { userId } = req.params
+    const {userId} = req.params
     if (isValidObjectId(userId)) {
-        const getuser = await userModel.findOne({ _id: userId })
+        const getuser = await userModel.findOne({_id: userId}).select("name username") // Only Select Name and userName
         if (!getuser) {
             return res.status(404).json({
                 message: 'User not found'
